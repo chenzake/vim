@@ -8,7 +8,7 @@ set fo+=mB
 set sm
 set selection=inclusive
 set wildmenu
-set mousemodel=popup
+"set mousemodel=popup
 
 au FileType php setlocal dict+=~/.vim/dict/php_funclist.dict
 au FileType css setlocal dict+=~/.vim/dict/css.dict
@@ -165,14 +165,14 @@ autocmd BufNewFile * normal G
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "键盘命令
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-:nmap <silent> <F9> <ESC>:Tlist<RETURN>
+:nmap <F9> :TagbarToggle<CR>
 " shift tab pages
 map <S-Left> :tabp<CR>
 map <S-Right> :tabn<CR>
 map! <C-Z> <Esc>zzi
 map! <C-O> <C-Y>,
 map <C-A> ggVG$"+y
-map <Esc><Esc> :w<CR>
+" map <Esc><Esc> :w<CR>
 map <F12> gg=G
 map <C-w> <C-w>w
 imap <C-k> <C-y>,
@@ -201,36 +201,36 @@ map <C-F3> \be
 "C，C++ 按F5编译运行
 map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
-	exec "w"
-	if &filetype == 'c'
-		exec "!g++ % -o %<"
-		exec "!time ./%<"
-	elseif &filetype == 'cpp'
-		exec "!g++ % -std=c++11 -o %<"
-		exec "!time ./%<"
-	elseif &filetype == 'java' 
-		exec "!javac %" 
-		exec "!time java %<"
-	elseif &filetype == 'sh'
-		:!time bash %
-	elseif &filetype == 'python'
-		exec "!time python2.7 %"
-    elseif &filetype == 'html'
-        exec "!firefox % &"
-    elseif &filetype == 'go'
+exec "w"
+if &filetype == 'c'
+    exec "!g++ % -o %<"
+    exec "!time ./%<"
+elseif &filetype == 'cpp'
+    exec "!g++ % -std=c++11 -o %<"
+    exec "!time ./%<"
+elseif &filetype == 'java' 
+    exec "!javac %" 
+    exec "!time java %<"
+elseif &filetype == 'sh'
+    :!time bash %
+elseif &filetype == 'python'
+    exec "!time python2.7 %"
+elseif &filetype == 'html'
+    exec "!firefox % &"
+elseif &filetype == 'go'
 "        exec "!go build %<"
-        exec "!time go run %"
-    elseif &filetype == 'mkd'
-        exec "!~/.vim/markdown.pl % > %.html &"
-        exec "!firefox %.html &"
-	endif
+    exec "!time go run %"
+elseif &filetype == 'mkd'
+    exec "!~/.vim/markdown.pl % > %.html &"
+    exec "!firefox %.html &"
+endif
 endfunc
 "C,C++的调试
 map <F8> :call Rungdb()<CR>
 func! Rungdb()
-	exec "w"
-	exec "!g++ % -std=c++11 -g -o %<"
-	exec "!gdb ./%<"
+exec "w"
+exec "!g++ % -std=c++11 -g -o %<"
+exec "!gdb ./%<"
 endfunc
 
 
@@ -240,26 +240,26 @@ map <F6> :call FormartSrc()<CR><CR>
 
 "定义FormartSrc()
 func FormartSrc()
-    exec "w"
-    if &filetype == 'c'
-        exec "!astyle --style=ansi -a --suffix=none %"
-    elseif &filetype == 'cpp' || &filetype == 'hpp'
-        exec "r !astyle --style=ansi --one-line=keep-statements -a --suffix=none %> /dev/null 2>&1"
-    elseif &filetype == 'perl'
-        exec "!astyle --style=gnu --suffix=none %"
-    elseif &filetype == 'py'||&filetype == 'python'
-        exec "r !autopep8 -i --aggressive %"
-    elseif &filetype == 'java'
-        exec "!astyle --style=java --suffix=none %"
-    elseif &filetype == 'jsp'
-        exec "!astyle --style=gnu --suffix=none %"
-    elseif &filetype == 'xml'
-        exec "!astyle --style=gnu --suffix=none %"
-    else
-        exec "normal gg=G"
-        return
-    endif
-    exec "e! %"
+exec "w"
+if &filetype == 'c'
+    exec "!astyle --style=ansi -a --suffix=none %"
+elseif &filetype == 'cpp' || &filetype == 'hpp'
+    exec "r !astyle --style=ansi --one-line=keep-statements -a --suffix=none %> /dev/null 2>&1"
+elseif &filetype == 'perl'
+    exec "!astyle --style=gnu --suffix=none %"
+elseif &filetype == 'py'||&filetype == 'python'
+    exec "r !autopep8 -i --aggressive %"
+elseif &filetype == 'java'
+    exec "!astyle --style=java --suffix=none %"
+elseif &filetype == 'jsp'
+    exec "!astyle --style=gnu --suffix=none %"
+elseif &filetype == 'xml'
+    exec "!astyle --style=gnu --suffix=none %"
+else
+    exec "normal gg=G"
+    return
+endif
+exec "e! %"
 endfunc
 "结束定义FormartSrc
 
@@ -268,10 +268,10 @@ endfunc
 ""实用设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("autocmd")
-      autocmd BufReadPost *
-          \ if line("'\"") > 0 && line("'\"") <= line("$") |
-          \   exe "normal g`\"" |
-          \ endif
+  autocmd BufReadPost *
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \   exe "normal g`\"" |
+      \ endif
 endif
 "当打开vim且没有文件时自动打开NERDTree
 autocmd vimenter * if !argc() | NERDTree | endif
@@ -321,7 +321,7 @@ set backspace=2
 " 允许backspace和光标键跨越行边界
 set whichwrap+=<,>,h,l
 " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
-set mouse=a
+set mouse-=a
 set selection=exclusive
 set selectmode=mouse,key
 " 通过使用: commands命令，告诉我们文件的哪一行被改变过
@@ -357,10 +357,10 @@ set completeopt=longest,menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CTags的设定  
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let Tlist_Sort_Type = "name"    " 按照名称排序  
-let Tlist_Use_Right_Window = 1  " 在右侧显示窗口  
-let Tlist_Compart_Format = 1    " 压缩方式  
-let Tlist_Exist_OnlyWindow = 1  " 如果只有一个buffer，kill窗口也kill掉buffer  
+"let Tlist_Sort_Type = "name"    " 按照名称排序  
+" let Tlist_Use_Right_Window = 1  " 在右侧显示窗口  
+" let Tlist_Compart_Format = 1    " 压缩方式  
+" let Tlist_Exist_OnlyWindow = 1  " 如果只有一个buffer，kill窗口也kill掉buffer  
 ""let Tlist_File_Fold_Auto_Close = 0  " 不要关闭其他文件的tags  
 ""let Tlist_Enable_Fold_Column = 0    " 不要显示折叠树  
 "let Tlist_Show_One_File=1            "不同时显示多个文件的tag，只显示当前文件的
@@ -373,21 +373,21 @@ set autochdir
 "其他东东
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "默认打开Taglist 
-let Tlist_Auto_Open=0 
+" let Tlist_Auto_Open=0 
 """""""""""""""""""""""""""""" 
 " Tag list (ctags) 
 """""""""""""""""""""""""""""""" 
-let Tlist_Ctags_Cmd = '/usr/local/bin/ctags' 
-let Tlist_Show_One_File = 1 "不同时显示多个文件的tag，只显示当前文件的 
-let Tlist_File_Fold_Auto_Close = 1
-let Tlist_Exit_OnlyWindow = 1 "如果taglist窗口是最后一个窗口，则退出vim 
-let Tlist_Use_Right_Window = 1 "在右侧窗口中显示taglist窗口
+"let Tlist_Ctags_Cmd = '/usr/local/bin/ctags' 
+"let Tlist_Show_One_File = 1 "不同时显示多个文件的tag，只显示当前文件的 
+"let Tlist_File_Fold_Auto_Close = 1
+"let Tlist_Exit_OnlyWindow = 1 "如果taglist窗口是最后一个窗口，则退出vim 
+"let Tlist_Use_Right_Window = 1 "在右侧窗口中显示taglist窗口
 " minibufexpl插件的一般设置
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
 let g:miniBufExplModSelTarget = 1  
-nmap tl :Tlist<cr>
+"nmap tl :Tlist<cr>
 
 "python补全
 let g:pydiction_location = '~/.vim/after/complete-dict'
@@ -450,6 +450,7 @@ Bundle 'The-NERD-Commenter'
 "django
 Bundle 'django_templates.vim'
 Bundle 'Django-Projects'
+Bundle 'Tagbar'
 
 "Bundle 'FredKSchott/CoVim'
 "Bundle 'djangojump'
