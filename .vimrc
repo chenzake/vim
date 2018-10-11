@@ -86,6 +86,7 @@ filetype on
 filetype plugin on
 " 为特定文件类型载入相关缩进文件
 filetype indent on
+filetype plugin indent on 
 " 保存全局变量
 set viminfo+=!
 " 带有如下符号的单词不要被换行分割
